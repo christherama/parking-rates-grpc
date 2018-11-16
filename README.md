@@ -22,3 +22,6 @@ Make a request
 ```
 $ curl -X GET 'http://localhost:4567/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T08:00:00Z'
 ```
+
+## References
+- Being that this was my first experience with gRPC, code inspiration was taken from [github.com/grpc/grpc-java](https://github.com/grpc/grpc-java).
