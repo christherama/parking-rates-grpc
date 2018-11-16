@@ -36,7 +36,7 @@ public class RatesApiTest {
     public static SparkServer<ParkingRatesApiTestApplication> testServer = new SparkServer<>(ParkingRatesApiTestApplication.class, 4567);
 
     @Test
-    public void ratesEndpoint_servesJson() throws Exception {
+    public void rateEndpoint_servesJson() throws Exception {
         GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
         getRates.addHeader("Accept","application/json");
         HttpResponse response = testServer.execute(getRates);
@@ -44,7 +44,7 @@ public class RatesApiTest {
     }
 
     @Test
-    public void ratesEndpoint_servesXml() throws Exception {
+    public void rateEndpoint_servesXml() throws Exception {
         GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
         getRates.addHeader("Accept","application/xml");
         HttpResponse response = testServer.execute(getRates);
@@ -52,7 +52,7 @@ public class RatesApiTest {
     }
 
     @Test
-    public void ratesEndpoint_whenDateRangeHasRate_respondsWithRate() throws Exception{
+    public void rateEndpoint_whenDateRangeHasRate_respondsWithRate() throws Exception{
         when(testServer.getApplication().getRateService().getRate(any())).thenReturn(1500);
         GetMethod getRates = testServer.get("/rate?start=2018-11-13T09:00:00Z&end=2018-11-13T10:01:02Z", false);
         getRates.addHeader("Accept","application/json");
@@ -63,14 +63,14 @@ public class RatesApiTest {
     }
 
     @Test
-    public void ratesEndpoint_whenDateIsInvalid_respondsWith400() throws Exception {
+    public void rateEndpoint_whenDateIsInvalid_respondsWith400() throws Exception {
         GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=hello", false);
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.code(),is(400));
     }
 
     @Test
-    public void ratesEndpoint_whenDateRangeSpansMultipleDays_respondsWith400() throws Exception {
+    public void rateEndpoint_whenDateRangeSpansMultipleDays_respondsWith400() throws Exception {
         GetMethod getRates = testServer.get("/rate?start=2018-07-01T07:00:00Z&end=2018-07-02T09:00:00Z", false);
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.code(), is(400));
