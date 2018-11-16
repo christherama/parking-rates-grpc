@@ -30,6 +30,7 @@ dependencies {
     compile     "io.grpc:grpc-stub:1.16.1"
     compile     "com.fasterxml.jackson.core:jackson-databind:2.9.7"
     compile     "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.7"
+    compile     "io.dropwizard.metrics:metrics-core:4.0.0"
     compile     "org.projectlombok:lombok:1.18.4"
 
     testCompile "com.despegar:spark-test:1.1.8"

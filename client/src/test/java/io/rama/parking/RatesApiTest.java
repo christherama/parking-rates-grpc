@@ -3,11 +3,15 @@ package io.rama.parking;
 import com.despegar.http.client.GetMethod;
 import com.despegar.http.client.HttpResponse;
 import com.despegar.sparkjava.test.SparkServer;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Data;
 import org.junit.ClassRule;
 import org.junit.Test;
 import spark.servlet.SparkApplication;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -71,6 +75,18 @@ public class RatesApiTest {
         GetMethod getRates = testServer.get("/rates?start=2018-07-01T07:00:00Z&end=2018-07-02T09:00:00Z", false);
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.code(), is(400));
+    }
+
+    @Test
+    public void metricsEndpoint_respondsWithMetrics() throws Exception {
+        GetMethod getRates = testServer.get("/metrics", false);
+        getRates.addHeader("Accept","application/json");
+        HttpResponse response = testServer.execute(getRates);
+        TypeReference<HashMap<String, Object>> mapTypeRef
+                = new TypeReference<HashMap<String, Object>>() {};
+        HashMap<String,Object> responseMap = new ObjectMapper().readValue(response.body(),mapTypeRef);
+        assertThat(response.code(),is(200));
+        assertThat(responseMap.containsKey("metrics"),is(true));
     }
 
     @Data

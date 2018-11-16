@@ -1,5 +1,7 @@
 package io.rama.parking;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
@@ -13,7 +15,10 @@ import spark.Request;
 import spark.Response;
 
 import java.time.format.DateTimeParseException;
+import java.util.HashMap;
+import java.util.Map;
 
+import static com.codahale.metrics.MetricRegistry.name;
 import static spark.Spark.get;
 
 @Log
@@ -22,12 +27,19 @@ public class RatesApi {
     private static final XmlMapper xmlMapper = new XmlMapper();
     private final RateService service;
 
+    private final MetricRegistry metrics = new MetricRegistry();
+    private final Timer responses = metrics.timer(name("GET /rates"));
+
     public RatesApi(RateService service) {
         this.service = service;
 
         // GET /rates
         get("/rates", Type.JSON, this::handleRatesRequest, this::json);
         get("/rates", Type.XML, this::handleRatesRequest, this::xml);
+
+        // GET /metrics
+        get("/metrics", Type.JSON, this::handleMetricsRequest, this::json);
+        get("/metrics", Type.XML, this::handleMetricsRequest, this::xml);
     }
 
     public RatesApi() {
@@ -47,8 +59,8 @@ public class RatesApi {
     }
 
     private ApiResponse handleRatesRequest(Request req, Response res) {
+        final Timer.Context context = responses.time();
         setResponseType(req,res);
-
         try {
             DateTimeRange range = DateTimeRange.builder()
                     .start(req.queryParams("start"))
@@ -66,7 +78,16 @@ public class RatesApi {
         } catch (RateNotFoundException ex) {
             res.status(404);
             return new ErrorResponse("No rates available during the provided time range");
+        } finally {
+            context.stop();
         }
+    }
+
+    private Object handleMetricsRequest(Request req, Response res) {
+        setResponseType(req,res);
+        Map<String, Object> metrics = new HashMap<>();
+        metrics.put("metrics",this.metrics.getTimers());
+        return metrics;
     }
 
     private void setResponseType(Request req, Response res) {
