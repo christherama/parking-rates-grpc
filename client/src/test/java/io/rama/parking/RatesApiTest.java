@@ -87,10 +87,4 @@ public class RatesApiTest {
         assertThat(response.code(),is(200));
         assertThat(responseMap.containsKey("metrics"),is(true));
     }
-
-    @Data
-    private static class RateDto {
-        private String status;
-        private Integer rate;
-    }
 }

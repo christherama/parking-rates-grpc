@@ -6,12 +6,14 @@ import lombok.extern.java.Log;
 
 import java.io.IOException;
 import java.net.URI;
+import java.nio.file.Paths;
 import java.util.Collection;
 
 @Log
 public class ParkingRateServer {
     private final int port;
     private final Server server;
+    private static final int PORT = 1234;
 
     public ParkingRateServer(int port) throws IOException {
         this(port,ParkingRateUtils.getDefaultFilePath());
@@ -50,7 +52,12 @@ public class ParkingRateServer {
     }
 
     public static void main(String[] args) throws Exception {
-        ParkingRateServer server = new ParkingRateServer(1234);
+        ParkingRateServer server;
+        if(args.length > 0) {
+            server = new ParkingRateServer(PORT,Paths.get(args[0]).toUri());
+        } else {
+            server = new ParkingRateServer(PORT);
+        }
         server.start();
         server.blockUntilShutdown();
     }

@@ -1,4 +1,5 @@
 rootProject.name = 'parking-rates-grpc'
 include 'server'
 include 'client'
+include 'integration'
 

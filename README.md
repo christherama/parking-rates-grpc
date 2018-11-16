@@ -5,17 +5,27 @@ This repository constitutes a code challenge submission to SpotHero.
 Clone this repository
 ```
 $ git clone https://github.com/christherama/parking-rates-grpc
+$ cd parking-rates-grpc
 ```
 
-Build the Docker images
+Run unit tests
 ```
-$ cd parking-rates-grpc
+$ ./gradlew client:test
+```
+
+Build Docker images
+```
 $ ./gradlew distDocker
 ```
 
-Start the containers
+Start containers
 ```
 $ docker-compose up -d
+```
+
+Run integration tests
+```
+$ ./gradlew integration:test
 ```
 
 Make a request
