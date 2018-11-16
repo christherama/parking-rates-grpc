@@ -23,6 +23,7 @@ ext {
 }
 
 dependencies {
+    compile     project(':server')
     compile     "com.sparkjava:spark-core:2.7.2"
     compile     "com.google.protobuf:protobuf-java-util:${protobufVersion}"
     compile     "io.grpc:grpc-netty-shaded:1.16.1"
@@ -45,11 +46,6 @@ sourceSets {
             srcDirs '../server/build/generated/source/proto/main/java'
         }
     }
-}
-
-configurations {
-    intTestCompile.extendsFrom testCompile
-    intTestRuntime.extendsFrom testRuntime
 }
 
 mainClassName = 'io.rama.parking.RatesApi'
