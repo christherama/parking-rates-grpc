@@ -5,7 +5,6 @@ import com.despegar.http.client.HttpResponse;
 import com.despegar.sparkjava.test.SparkServer;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Data;
 import org.junit.ClassRule;
 import org.junit.Test;
 import spark.servlet.SparkApplication;

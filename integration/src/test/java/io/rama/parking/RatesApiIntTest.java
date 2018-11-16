@@ -1,7 +1,6 @@
 package io.rama.parking;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import static io.rama.parking.ApiClient.ApiRateResponse;

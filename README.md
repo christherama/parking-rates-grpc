@@ -1,5 +1,4 @@
 # Parking Rates API
-This repository constitutes a code challenge submission to SpotHero.
 
 ## Setup
 Clone this repository
