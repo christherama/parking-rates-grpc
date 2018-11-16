@@ -1,7 +1,6 @@
 package io.rama.parking;
 
 import io.grpc.stub.StreamObserver;
-import lombok.Builder;
 
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -18,11 +17,11 @@ public class RateFinderService extends RateFinderGrpc.RateFinderImplBase {
 
     @Override
     public void find(ParkingRatesProtos.RateRequest request, StreamObserver<ParkingRatesProtos.RateResponse> responseObserver) {
-        DateTimeRange range = new DateTimeRange(request.getStart(),request.getEnd());
+        DateTimeRange range = new DateTimeRange(request.getStart(), request.getEnd());
 
-         Optional<Rate> rate = rates.stream().filter(r ->
+        Optional<Rate> rate = rates.stream().filter(r ->
                 r.getDaysOfWeek().contains(range.start.getDayOfWeek().getValue()) &&
-                        range.fallsWithin(r.getStart(),r.getEnd())
+                        range.fallsWithin(r.getStart(), r.getEnd())
         ).findFirst();
         ParkingRatesProtos.RateResponse response = rate
                 .map(r -> ParkingRatesProtos.RateResponse.newBuilder().setRate(r.getRate()).setExists(true).build())
@@ -36,16 +35,18 @@ public class RateFinderService extends RateFinderGrpc.RateFinderImplBase {
         private LocalDateTime end;
 
         public DateTimeRange(long start, long end) {
-            this.start = LocalDateTime.ofEpochSecond(start,0, ZoneOffset.UTC);
-            this.end = LocalDateTime.ofEpochSecond(end,0, ZoneOffset.UTC);
+            this.start = LocalDateTime.ofEpochSecond(start, 0, ZoneOffset.UTC);
+            this.end = LocalDateTime.ofEpochSecond(end, 0, ZoneOffset.UTC);
         }
 
         public boolean fallsWithin(LocalTime start, LocalTime end) {
-            return  (   start.equals(this.start.toLocalTime()) ||
-                    start.isBefore(this.start.toLocalTime())
-            ) && (
-                    end.equals(this.end.toLocalTime()) ||
-                            end.isAfter(this.end.toLocalTime()));
+            return  (
+                        start.equals(this.start.toLocalTime()) ||
+                        start.isBefore(this.start.toLocalTime())
+                    ) && (
+                        end.equals(this.end.toLocalTime()) ||
+                        end.isAfter(this.end.toLocalTime())
+                    );
         }
     }
 }

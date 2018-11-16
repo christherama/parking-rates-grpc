@@ -28,14 +28,14 @@ public class RatesApi {
     private final RateService service;
 
     private final MetricRegistry metrics = new MetricRegistry();
-    private final Timer responses = metrics.timer(name("GET /rates"));
+    private final Timer responses = metrics.timer(name("GET /rate"));
 
     public RatesApi(RateService service) {
         this.service = service;
 
         // GET /rates
-        get("/rates", Type.JSON, this::handleRatesRequest, this::json);
-        get("/rates", Type.XML, this::handleRatesRequest, this::xml);
+        get("/rate", Type.JSON, this::handleRatesRequest, this::json);
+        get("/rate", Type.XML, this::handleRatesRequest, this::xml);
 
         // GET /metrics
         get("/metrics", Type.JSON, this::handleMetricsRequest, this::json);

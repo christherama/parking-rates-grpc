@@ -11,7 +11,6 @@ import org.junit.Test;
 import spark.servlet.SparkApplication;
 
 import java.util.HashMap;
-import java.util.Map;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
@@ -38,7 +37,7 @@ public class RatesApiTest {
 
     @Test
     public void ratesEndpoint_servesJson() throws Exception {
-        GetMethod getRates = testServer.get("/rates?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
+        GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
         getRates.addHeader("Accept","application/json");
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.headers().get("Content-Type").get(0), is("application/json"));
@@ -46,7 +45,7 @@ public class RatesApiTest {
 
     @Test
     public void ratesEndpoint_servesXml() throws Exception {
-        GetMethod getRates = testServer.get("/rates?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
+        GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T12:00:00Z", false);
         getRates.addHeader("Accept","application/xml");
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.headers().get("Content-Type").get(0), is("application/xml"));
@@ -55,7 +54,7 @@ public class RatesApiTest {
     @Test
     public void ratesEndpoint_whenDateRangeHasRate_respondsWithRate() throws Exception{
         when(testServer.getApplication().getRateService().getRate(any())).thenReturn(1500);
-        GetMethod getRates = testServer.get("/rates?start=2018-11-13T09:00:00Z&end=2018-11-13T10:01:02Z", false);
+        GetMethod getRates = testServer.get("/rate?start=2018-11-13T09:00:00Z&end=2018-11-13T10:01:02Z", false);
         getRates.addHeader("Accept","application/json");
         HttpResponse response = testServer.execute(getRates);
         RateDto dto = new ObjectMapper().readValue(response.body(), RateDto.class);
@@ -65,14 +64,14 @@ public class RatesApiTest {
 
     @Test
     public void ratesEndpoint_whenDateIsInvalid_respondsWith400() throws Exception {
-        GetMethod getRates = testServer.get("/rates?start=2015-07-01T07:00:00Z&end=hello", false);
+        GetMethod getRates = testServer.get("/rate?start=2015-07-01T07:00:00Z&end=hello", false);
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.code(),is(400));
     }
 
     @Test
     public void ratesEndpoint_whenDateRangeSpansMultipleDays_respondsWith400() throws Exception {
-        GetMethod getRates = testServer.get("/rates?start=2018-07-01T07:00:00Z&end=2018-07-02T09:00:00Z", false);
+        GetMethod getRates = testServer.get("/rate?start=2018-07-01T07:00:00Z&end=2018-07-02T09:00:00Z", false);
         HttpResponse response = testServer.execute(getRates);
         assertThat(response.code(), is(400));
     }

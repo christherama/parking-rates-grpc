@@ -20,5 +20,5 @@ $ docker-compose up -d
 
 Make a request
 ```
-$ curl -X GET 'http://localhost:4567/rates?start=2015-07-01T07:00:00Z&end=2015-07-01T08:00:00Z'
+$ curl -X GET 'http://localhost:4567/rate?start=2015-07-01T07:00:00Z&end=2015-07-01T08:00:00Z'
 ```
