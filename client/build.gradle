@@ -2,8 +2,8 @@ apply plugin: 'java'
 apply plugin: 'application'
 apply plugin: 'docker'
 
-group 'io.rama'
-version '1.0-SNAPSHOT'
+group 'parking-rates'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -45,7 +45,7 @@ sourceSets {
     }
 }
 
-mainClassName = 'io.rama.parking.ParkingRatesApi'
+mainClassName = 'io.rama.parking.RatesApi'
 
 distDocker {
     exposePort 4567

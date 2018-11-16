@@ -13,9 +13,8 @@ buildscript {
         classpath 'se.transmode.gradle:gradle-docker:1.2'
     }
 }
-
-group 'io.rama'
-version '1.0-SNAPSHOT'
+group 'parking-rates'
+version '1.0'
 
 sourceCompatibility = 1.8
 
@@ -64,5 +63,5 @@ protobuf {
 mainClassName = 'io.rama.parking.ParkingRateServer'
 
 distDocker {
-    exposePort 8980
+    exposePort 1234
 }
