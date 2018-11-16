@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package parkingrates;
+
+option java_package = "io.rama.parking";
+option java_outer_classname = "ParkingRatesProtos";
+
+service RateFinder {
+    rpc Find (RateRequest) returns (RateResponse) {}
+}
+
+message RateRequest {
+    int64 start = 1;
+    int64 end = 2;
+}
+
+message RateResponse {
+    bool exists = 1;
+    int32 rate = 2;
+}

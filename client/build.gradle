@@ -1,0 +1,52 @@
+apply plugin: 'java'
+apply plugin: 'application'
+apply plugin: 'docker'
+
+group 'io.rama'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'se.transmode.gradle:gradle-docker:1.2'
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    protobufVersion = '3.5.1'
+}
+
+dependencies {
+    compile     "com.sparkjava:spark-core:2.7.2"
+    compile     "com.google.protobuf:protobuf-java-util:${protobufVersion}"
+    compile     "io.grpc:grpc-netty-shaded:1.16.1"
+    compile     "io.grpc:grpc-protobuf:1.16.1"
+    compile     "io.grpc:grpc-stub:1.16.1"
+    compile     "com.fasterxml.jackson.core:jackson-databind:2.9.7"
+    compile     "com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.7"
+    compile     "org.projectlombok:lombok:1.18.4"
+
+    testCompile "com.despegar:spark-test:1.1.8"
+    testCompile "org.mockito:mockito-core:2.23.0"
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs '../server/build/generated/source/proto/main/grpc'
+            srcDirs '../server/build/generated/source/proto/main/java'
+        }
+    }
+}
+
+mainClassName = 'io.rama.parking.ParkingRatesApi'
+
+distDocker {
+    exposePort 4567
+}
