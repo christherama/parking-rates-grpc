@@ -9,7 +9,7 @@ $ cd parking-rates-grpc
 
 Run unit tests
 ```
-$ ./gradlew client:test
+$ ./gradlew client:server client:test
 ```
 
 Build Docker images
