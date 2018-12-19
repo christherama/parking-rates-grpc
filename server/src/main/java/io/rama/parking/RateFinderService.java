@@ -30,7 +30,7 @@ public class RateFinderService extends RateFinderGrpc.RateFinderImplBase {
         responseObserver.onCompleted();
     }
 
-    private static class DateTimeRange {
+    public static class DateTimeRange {
         private LocalDateTime start;
         private LocalDateTime end;
 
